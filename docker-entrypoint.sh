@@ -9,7 +9,7 @@ if [ "$1" = 'postgres' ]; then
 
 	mkdir -p "$PGDATA"/ssl
 	cd "$PGDATA"/ssl
-	openssl req -new -newkey rsa:1024 -days 365000 -nodes -x509 -keyout server.key -subj "/CN=PostgreSQL" -out server.crt
+	openssl req -new -newkey rsa:2048 -days 365000 -nodes -x509 -keyout server.key -subj "/CN=PostgreSQL" -out server.crt
 	chmod og-rwx server.key
 	chown -R postgres:postgres "$PGDATA"/ssl
 
