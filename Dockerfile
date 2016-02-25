@@ -47,8 +47,13 @@ ENV PATH /usr/lib/postgresql/$PG_MAJOR/bin:$PATH
 ENV PGDATA /var/lib/postgresql/data
 VOLUME /var/lib/postgresql/data
 
-COPY docker-entrypoint.sh /
+RUN mkdir -p /var/lib/postgresql/ssl
+RUN openssl req -new -newkey rsa:1024 -days 365000 -nodes -x509 -keyout /var/lib/postgresql/ssl/server.key -subj "/CN=PostgreSQL" -out /var/lib/postgresql/ssl/server.crt
+RUN chmod og-rwx /var/lib/postgresql/ssl/server.key
+RUN chown -R postgres:postgres /var/lib/postgresql/ssl
 
+COPY docker-entrypoint.sh /
+RUN chmod +x /docker-entrypoint.sh
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
 EXPOSE 5432
